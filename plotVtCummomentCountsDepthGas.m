@@ -137,12 +137,10 @@ set(gca,'XTickLabel',[]);
 set(gca,'YTickLabel',[]);
 
 
-% Gas
-addpath( '/home/seisan/STUFF/projectsMVO/megaplot2a/');
 
 %subplot(4,1,4);
 axes(ha(4));
-load( 'data/gas/gas_so2_auto' );
+load( '/home/seisan/src/megaplot/data/gas/gas_so2_auto' );
 gdata = get( gas_so2, 'Data' );
 tdata = get( gas_so2, 'Time' );
 tstart = datenum( gas_so2.TimeInfo.StartDate );
@@ -153,7 +151,7 @@ NEW_DOAS_start = datenum('01-Jan-2017');
 [idx_doas,~]=find(tdata>=DOAS_start&tdata<NEW_DOAS_start); 
 plot( tdata(idx_doas), gdata(idx_doas), 'bo', 'MarkerSize', 4 );
 hold on;
-load('data/gas/gas_so2_traverse.mat');
+load('/home/seisan/src/megaplot/data/gas/gas_so2_traverse.mat');
 plot(gas_dates,gas_so2_trav,'ro','MarkerSize', 4);
 legend( 'DOAS', 'Traverse', 'Location','northwest'  );
 
