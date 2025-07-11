@@ -67,8 +67,6 @@ Plots hourly, daily, weekly or monthly counts of seismic event types.
 
 Plot number of working seismic stations based on RSAM data.
 
-*Caution: not working properly as I can't remember how to update the database.*
-
 ## plotRain.m
 
 Plots rainfall data, used for checking.
