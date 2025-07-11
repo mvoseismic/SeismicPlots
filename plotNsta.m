@@ -1,0 +1,71 @@
+% plot_vt_depths_lats_lons_nsta
+
+clear;
+
+setup = setupGlobals();
+reFetch( setup );
+
+[datesBeg, datesEnd] = askDates();
+setup.DatimBeg = datesBeg;
+setup.PlotBeg = setup.DatimBeg;
+setup.DatimEnd = datesEnd;
+setup.PlotEnd = setup.DatimEnd;
+setup.SubplotSpace = 'normal';
+setup.PlotXaxis = 'normal';
+
+plotNtrig = inputd( 'Include number of stations to trigger? (Y/N)', 's', 'N' );
+
+data_file = fullfile( setup.DirMegaplotData, 'fetchedCountVolcstat.mat' );
+load( data_file );
+
+datim = [CountVolcstatNSTA.datim];
+idPlot = datim >= setup.PlotBeg & datim <= setup.PlotEnd;
+datim = datim( idPlot );
+data = [CountVolcstatNSTA.data];
+data = data( idPlot );
+
+figure;
+figure_size( 'l' );
+
+stem( datim, data, 'b', 'Marker', 'none','HandleVisibility','off');
+hold on;
+grid on;
+
+xlim( [datesBeg datesEnd] );
+ylim( [0 13] );
+datetick( 'x', 'keeplimits' );
+
+
+if strcmp( plotNtrig, 'Y' )
+    dateNtrig = [ ...
+        dateCommon( 'begPause5' ), ...
+        datenum(2017,10,1), ...
+        datenum(2017,10,1), ...
+        datenum(2023,4,20), ...
+        datenum(2023,4,20), ...
+        datenum(2023,10,6), ...
+        datenum(2023,10,6), ...
+        datenum(2023,10,9), ...
+        datenum(2023,10,9), ...
+        now ];
+    dataNtrig = [ ...
+        4, ...
+        4, ...
+        3, ...
+        3, ...
+        4, ...
+        4, ...
+        3, ...
+        3, ...
+        4, ...
+        4 ];
+    plot( dateNtrig, dataNtrig, 'r-', 'LineWidth', 4.0 );
+end
+
+legend( {"Number of stations required to trigger" }, 'location', 'northwest' );
+
+plotOverTitle( 'Working seismic stations per day (based on RSAM data)' );
+fontsize(gcf,scale=2.0);
+
+fileSave = 'fig-nstas.png';
+saveas( gcf, fileSave );
