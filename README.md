@@ -12,7 +12,7 @@ The scripts use data from the SEISAN database and other files. The data used by 
 Do you want to re-fetch seismic data? Y/N [N]: 
 ```
 
-The start and end dates for the plot are asked for in a dd/mm/yyyy format, but the following (hopefully self-explantory aliases are accepted. These are set by the function */home/seisan/src/MATLAB/utils/dateCommon.m*.
+The start and end dates for the plot are asked for in a dd/mm/yyyy format, but the following (hopefully self-explantory) aliases are accepted. These are set by the function */home/seisan/src/MATLAB/utils/dateCommon.m*.
 ```
 now
 today
