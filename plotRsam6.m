@@ -37,24 +37,29 @@ for ista = 1:6
     switch ista
         case 1
             stachan = 'MSS1_SHZ';
-            yLimits = [0 200];
+%            yLimits = [0 200];
+            yLimits = [0 2500];
         case 2
             if strcmp( dataBand, 's' )
                 stachan = 'MBFR_EHZ';
+%                yLimits = [0 2000];
+                yLimits = [0 10000];
             else
                 stachan = 'MBFR_HHZ';
                 yLimits = [0 2000];
             end
         case 3
             if strcmp( dataBand, 's' )
-                stachan = 'MBLG_EHZ';
+%                yLimits = [0 2000];
+                yLimits = [0 10000];
             else
                 stachan = 'MBLG_HHZ';
                 yLimits = [0 2000];
             end
         case 4
             if strcmp( dataBand, 's' )
-                stachan = 'MBLY_EHZ';
+%                yLimits = [0 2000];
+                yLimits = [0 10000];
             else
                 stachan = 'MBLY_HHZ';
                 yLimits = [0 2000];
@@ -62,15 +67,17 @@ for ista = 1:6
         case 5
             if strcmp( dataBand, 's' )
                 stachan = 'MBGH_EHZ';
+                yLimits = [0 2000];
             else
                 stachan = 'MBGH_HHZ';
                 yLimits = [0 2000];
             end
         case 6
             if strcmp( dataBand, 's' )
-                stachan = 'MBWH_SHZ';
+                stachan = 'MBWH_EHZ';
+                yLimits = [0 2000];
             else
-                stachan = 'MBWH_BHZ';
+                stachan = 'MBWH_HHZ';
                 yLimits = [0 1500];
             end
     end

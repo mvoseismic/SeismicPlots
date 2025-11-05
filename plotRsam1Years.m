@@ -11,15 +11,14 @@ setup = setupGlobals();
 dirRsam = setup.DirRsam;
 %dirRsam = '/mnt/earthworm3/monitoring_data/rsam/';
 
-station = 'MSS1';
-stachan = 'MSS1_SHZ';
-nrmean = 11;
+station = 'MBGH';
+nrmean = 31;
 
 figure_size( 'l' );
 hold on;
 
-year1 = 2014;
-year2 = 2023;
+year1 = 2010;
+year2 = 2025;
 nyears = year2 - year1 + 1;
 
 for year = year1:year2
@@ -28,31 +27,44 @@ for year = year1:year2
     datimEndYear = datenum( year+1, 1, 1, 0, 0, 0 );
     xLimits = [ datimBegYear datimEndYear ];
 
+    stachan = 'MBGH_SHZ';
     fileRsam = sprintf( '%4d_rsam_%s_60sec.dat', year, stachan );
     fileRsam = fullfile( dirRsam, fileRsam );
     [dataRsam1,datimRsam1] = readRsamFile( fileRsam );
-
     dataRsam1 = nan_rmean( dataRsam1, nrmean );
 
+    stachan = 'MBGH_EHZ';
+    fileRsam = sprintf( '%4d_rsam_%s_60sec.dat', year, stachan );
+    fileRsam = fullfile( dirRsam, fileRsam );
+    [dataRsam2,datimRsam2] = readRsamFile( fileRsam );
+    dataRsam2 = 1.5 * dataRsam2;
+    dataRsam2 = nan_rmean( dataRsam2, nrmean );
+
     subplot( nyears, 1, year-year1+1 );
-    semilogy( datimRsam1, dataRsam1, 'b-' );
+    plot( datimRsam1, dataRsam1, 'b-' );
+    hold on;
+    plot( datimRsam2, dataRsam2, 'r-' );
+    box on;
 
     xlim( xLimits );
-    ylim([8 300]);
+    ylim( [0 12000] );
     datetick( 'x', 3 );
-    ylabel( sprintf( '%4d', year ) );
-    grid on;
+    ylabel( sprintf( '%4d', year ),"Rotation",0 );
+    set(gca,'YTick',[])
 
     set(gca,'TickDir','out');
+    ax = gca;
+    ax.TickLength = ax.TickLength/5.0;
 
     if year < year2
         set(gca,'Xticklabel',[]);
     end
+
+    set(gca,'fontsize', 14);
     
 
 end
     
 
-plotOverTitle( 'MSS1.SHZ RSAM (11-point running mean)' );
-%plotOverTitle( 'MSS1.SHZ RSAM 2014-2023' );
+plotOverTitle( 'MBGH SP RSAM (31-point running mean) (Radian data in red)' );
 

@@ -1,9 +1,10 @@
 clear;
+close all;
 
 setup = setupGlobals();
 reFetch( setup );
 
-[plotBeg, plotEnd] = askDates();
+[plotBeg, plotEnd] = askDates( 'begPause5', 'endYear' );
 
 setup.DatimBeg = plotBeg;
 setup.PlotBeg = setup.DatimBeg;
@@ -19,11 +20,14 @@ showStrings = inputd( 'Show VT strings', 'l', 'n');
 
 Vlines(1).datim = datenum( 2019, 12, 1 );
 Vlines(2).datim = datenum( 2022, 8, 1 );
+Vlines(3).datim = datenum( 2023, 6, 1 );
 Vlines(1).style = 'g-';
 Vlines(2).style = 'g-';
-Vlines(1).width = 0.5;
-Vlines(2).width = 0.5;
-datimLines = [ datenum(2019,12,1) datenum(2022,8,1) ];
+Vlines(3).style = 'g-';
+Vlines(1).width = 1.0;
+Vlines(2).width = 1.0;
+Vlines(3).width = 1.0;
+datimLines = [ datenum(2019,12,1) datenum(2022,8,1) datenum(2023,6,1) ];
 
 %dateTicks = [ datenum(2010,1,1,0,0,0) datenum(2011,1,1,0,0,0) datenum(2012,1,1,0,0,0) datenum(2013,1,1,0,0,0) datenum(2014,1,1,0,0,0) datenum(2015,1,1,0,0,0) datenum(2016,1,1,0,0,0) ...
  %   datenum(2017,1,1,0,0,0) datenum(2018,1,1,0,0,0) datenum(2019,1,1,0,0,0) datenum(2020,1,1,0,0,0) datenum(2021,1,1,0,0,0) datenum(2022,1,1,0,0,0) datenum(2023,1,1,0,0,0) ] ;
@@ -115,7 +119,7 @@ end
 %h1=plot( localDatim, cumsum(localMoment), 'r-', 'LineWidth', 2, 'HandleVisibility', 'off' );
 %hax=get(h1,'Parent');
 xlim( [ setup.PlotBeg setup.PlotEnd ] );
-ylim( [0 Inf] );
+%ylim( [0 Inf] );
 %set(hax, 'XTick', dateTicks );
 datetick( 'x', 'keeplimits' );
 grid on;
@@ -173,7 +177,8 @@ if addFits
             y = yc(idWant);
             c = polyfit(x,y,1);
             y_est = polyval(c,localDatim);
-            plot(localDatim,y_est,'-', 'Color', lineColour, 'LineWidth',1);
+            idWant = y_est >= 0.0;
+            plot(localDatim(idWant),y_est(idWant),'-', 'Color', lineColour, 'LineWidth',1);
         end
 
     
@@ -182,11 +187,12 @@ if addFits
         legItems{end + 1} = legItem;
 
         legend( legItems, 'Location', 'northwest' );
+        grid off;
     end
 end
 
 %plotVertLines( Vlines );
-xline( datimLines, 'g-', 'LineWidth', 0.5,'HandleVisibility','off');
+xline( datimLines, 'k--', cellstr(datestr(datimLines)), 'LineWidth', 1.0,'HandleVisibility','off');
 
 
 if ~addCounts

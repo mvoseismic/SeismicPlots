@@ -3,6 +3,7 @@
 % R.C. Stewart, 2-March-2020
 
 clear;
+close all;
 
 setup = setupGlobals();
 reFetch();
@@ -31,11 +32,11 @@ set( gca, 'FontSize', 16 );
 ylim( [0 60] );
 
 nexttile;
-fileRain = fullfile( setup.DirWeather, 'LeesWx_HourlyRain.mat' );
+fileRain = fullfile( setup.DirWeather, '0-new', 'LeesWxRain1m.mat' );
 load( fileRain );
-idWant = datim >= setup.PlotBeg & datim < setup.PlotEnd;
-datim2 = datim( idWant );
-rain2 = rain( idWant );
+idWant = datimRain >= setup.PlotBeg & datimRain < setup.PlotEnd;
+datim2 = datimRain( idWant );
+rain2 = rain1minute( idWant );
 plot( datim2, cumsum(rain2), 'b-', 'LineWidth', 1.0 );
 ylabel( 'mm' );
 
