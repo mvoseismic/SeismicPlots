@@ -10,7 +10,16 @@ setup = setupGlobals();
 reFetch( setup );
 
 % User input
-[datesBeg, datesEnd] = askDates();
+fileSelect = inputd( 'Select file (instead of default date span', 's', '' );
+if strcmp( fileSelect, '' )
+    [datesBeg, datesEnd] = askDates();
+else
+    fetchSelect( setup, '', fileSelect );
+    fileHypo = fullfile( setup.DirMegaplotData, 'fetchedHypoSelectSpecial.mat' );
+    load( fileHypo );   
+    datesBeg = min([Hypo.datim]);
+    datesEnd = max([Hypo.datim]);
+end
 mapScale = inputd( 'Scale of map (n/c/w)', 's', 'n' );
 showDem = inputd( 'Show DEM (y/n)', 's', 'y' );
 symbolType = inputd( 'Symbol type( f, m )', 's', 'm' );
@@ -71,26 +80,40 @@ lonProfEW = deg2km( lonProfEW - lonSummit );
 altProfEW = -1* altProfEW/1000;
 
 % Hypocentres
-Hypo = getHypo( setup );
-Hypo2 = hypoSubset( Hypo, 'LV_vt_loc', [setup.DatimBeg], [setup.DatimEnd] );
-if magCutoff > -1.0
-    Ranges.mag = [magCutoff 9.9];
-    Hypo2 = hypoSubsetRanges(Hypo2, Ranges);
+if strcmp( fileSelect, '' )
+    Hypo = getHypo( setup );
 end
-hypo2MagSymbolSize = 30*([Hypo2.mag]-1);
-hypo2MagSymbolSize(isnan(hypo2MagSymbolSize)) = 1;
-hypo2MagSymbolSize( hypo2MagSymbolSize <= 1 ) = 1;
-hypoX = deg2km( [Hypo2.lon] - lonSummit );
-hypoY = deg2km( [Hypo2.lat] - latSummit );
-hypoZ = [Hypo2.dep];
-hypoMss = hypo2MagSymbolSize;
-hypoOtime = [Hypo2.otime];
+
+if strcmp( fileSelect, '' )
+    Hypo2 = hypoSubset( Hypo, 'LV_vt_loc', [setup.DatimBeg], [setup.DatimEnd] );
+    if magCutoff > -1.0
+        Ranges.mag = [magCutoff 9.9];
+        Hypo2 = hypoSubsetRanges(Hypo2, Ranges);
+    end
+    hypo2MagSymbolSize = 30*([Hypo2.mag]-1);
+    hypo2MagSymbolSize(isnan(hypo2MagSymbolSize)) = 1;
+    hypo2MagSymbolSize( hypo2MagSymbolSize <= 1 ) = 1;
+    hypoX = deg2km( [Hypo2.lon] - lonSummit );
+    hypoY = deg2km( [Hypo2.lat] - latSummit );
+    hypoZ = [Hypo2.dep];
+    hypoMss = hypo2MagSymbolSize;
+    hypoOtime = [Hypo2.otime];
+else
+    hypo2MagSymbolSize = 30*([Hypo.mag]-1);
+    hypo2MagSymbolSize(isnan(hypo2MagSymbolSize)) = 1;
+    hypo2MagSymbolSize( hypo2MagSymbolSize <= 1 ) = 1;
+    hypoX = deg2km( [Hypo.lon] - lonSummit );
+    hypoY = deg2km( [Hypo.lat] - latSummit );
+    hypoZ = [Hypo.dep];
+    hypoMss = hypo2MagSymbolSize;
+    hypoOtime = [Hypo.datim];
+end
 
 % Seismic stations
-fileStations = '/home/seisan/src/SeismicStations/created/DataFiles/20230328-MVO.txt';
+fileStations = '/home/seisan/src/SeismicStations/created/DataFiles/MVO-now.txt';
 S = readtable( fileStations );
-xStas = deg2km( [S.Longitude] - lonSummit );
-yStas = deg2km( [S.Latitude] - latSummit );
+xStas = deg2km( [S.Var3] - lonSummit );
+yStas = deg2km( [S.Var2] - latSummit );
 
 % Figure Stuff
 figure;
@@ -150,8 +173,12 @@ else
     ax2 = nexttile(2);
 end
 tit1 = 'VT Hypocentres';
-tit2 = sprintf( '%s to %s', ...
-    datestr( datesBeg ), datestr( datesEnd ) );
+if strcmp( fileSelect, '' )
+    tit2 = sprintf( '%s to %s', ...
+        datestr( datesBeg ), datestr( datesEnd ) );
+else
+    tit2 = '';
+end
 if magCutoff > -1.0
     tit2 = strcat( tit2, sprintf( "  (ML > %3.1f)", magCutoff ) );
 end
