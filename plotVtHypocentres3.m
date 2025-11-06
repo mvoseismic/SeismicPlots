@@ -196,7 +196,12 @@ if strcmp( symbolType, 'm' )
             otherwise
                 symbolSize = 30*(mag-1);
         end
-        scatter( 1.5, (mag/1.5), symbolSize, 'r' );
+        switch symbolFill
+            case 'y'
+                scatter( 1.5, (mag/1.5), symbolSize, 'r', 'MarkerFaceColor', 'r' );
+            otherwise
+                scatter( 1.5, (mag/1.5), symbolSize, 'r' );
+        end
         text( 2.0, (mag/1.5), sprintf( '%3.1f', mag) );
     end
 end
