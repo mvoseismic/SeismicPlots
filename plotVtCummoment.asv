@@ -260,11 +260,11 @@ elseif addMags
     datimMags = [Hypo2.datim];
     magMags = [Hypo2.mag];
 
-    plot( datimMags, magMags, 'ko', 'MarkerFaceColor', 'r' );
+    stem( datimMags, magMags, 'filled', 'r' );
 
     xlim( [ setup.PlotBeg setup.PlotEnd ] );
     datetick( 'x', 'keeplimits' );
-    title( 'VT magnitudes' );
+    title( 'Weekly count of VTs' );
     grid on;
     
 end
