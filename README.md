@@ -61,7 +61,7 @@ Calculates and lists Seismic Moments calculated from ML for SEISAN VTs. This fun
 
 ## plotCounts.m
 
-Plots hourly, daily, weekly or monthly counts of seismic event types.
+Plots hourly, daily, weekly or monthly counts of seismic event types. Edit script to change which event types to plot.
 
 ## plotNsta.m
 
@@ -147,6 +147,9 @@ f: fixed size
 m: size varies with magnitude
 md: size varies with magnitude, colour varies with depth. Not implemented.
 
+## plotVtMagnitudes.m
+
+PLots VT magnitudes.
 
 ## plotWeeklyCounts.m
 

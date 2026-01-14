@@ -27,9 +27,10 @@ if ~strcmp( countBin, 'h' )
 
     %plotSeismicCounts( setup, 'all5' );
     %plotSeismicCounts( setup, 'all5a' );
-    plotSeismicCounts( setup, 'all4s' );
+    %plotSeismicCounts( setup, 'all4s' );
     %plotSeismicCounts( setup, 'all9' );
     %plotSeismicCounts( setup, 'vtt' );
+    plotSeismicCounts( setup, 'vtt' );
 
 else
 

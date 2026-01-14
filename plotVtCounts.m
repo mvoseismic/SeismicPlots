@@ -7,7 +7,7 @@ setup = setupGlobals();
 reFetch();
 
 [setup.PlotBeg, setup.PlotEnd] = askDates();
-countBin = inputd( 'Count interval (d/w/m)', 's', 'd' );
+countBin = inputd( 'Count interval (h/d/w/m)', 's', 'd' );
 
 switch countBin
     case 'm'
